@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/water"
+    tools:context=".OrdersFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <EditText
+        android:id="@+id/editCustomer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="24dp"
+        android:hint="@string/Enter_Your_Name"
+        android:imeOptions="actionDone"
+        android:inputType="text"
+        android:textColor="@color/textColor"
+        android:textColorHint="@color/textColorHint"/>
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_alignStart="@+id/editCustomer"
+        android:layout_below="@+id/editCustomer"
+        android:layout_marginEnd="24dp"
+        android:layout_marginTop="8dp"
+        android:contentDescription="@null"
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/camera" />
+    <TextView
+        android:id="@+id/imageText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/Take_photo_for_TShirt"
+        android:textColor="@color/textColorCamera"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:layout_marginStart="24dp"
+        android:layout_alignBottom="@+id/imageView"
+        android:layout_centerHorizontal="true"/>
+    <EditText
+        android:id="@+id/editOptional"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/imageView"
+        android:layout_below="@+id/imageView"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="35dp"
+        android:hint="@string/order_message_instructions"
+        android:inputType="textMultiLine"
+        android:textColor="@color/textColor"
+        android:textColorHint="@color/textColorHint"/>
+    <TextView
+        android:id="@+id/editCollect"
+        android:layout_width="256dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/editCustomer"
+        android:layout_marginBottom="89dp"
+        android:text="@string/ready_time"
+        android:textColor="@color/textColor"
+        android:textSize="18sp"/>
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/editCollect"
+        android:layout_alignEnd="@+id/editCustomer"
+        android:layout_gravity="center"
+        android:layout_marginEnd="0dp"
+        android:gravity="start"
+        android:textColor="#ffffff"
+        android:textSize="15sp"
+        tools:ignore="RtlHardcoded" />
+    <Button
+        android:id="@+id/button"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="18dp"
+        android:background="@color/button_backgound"
+        android:text="@string/Send_Order"
+        android:textColor="#ffffff"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+</RelativeLayout>
+

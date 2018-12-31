@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <!-- TODO Reference all the color-->
+    <color name="textColor">#2f3542</color>
+    <color name="textColorHint">#2f3542</color>
+    <color name="textColorCamera">#ffffff</color>
+    <color name="button_backgound">#fab1a0</color>
+
+
+</resources>
