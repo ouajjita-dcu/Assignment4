@@ -25,4 +25,6 @@
         <item>"10"</item>
         <item>"14"</item>
     </string-array>
+
+    <string name="phone_number">Phone number: (01)63882619</string>
 </resources>
