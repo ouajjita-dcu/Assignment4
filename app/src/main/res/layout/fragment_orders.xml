@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/water"
+    android:background="#E6E6FA"
     tools:context=".OrdersFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -18,7 +18,7 @@
         android:imeOptions="actionDone"
         android:inputType="text"
         android:textColor="@color/textColor"
-        android:textColorHint="@color/textColorHint"/>
+        android:textColorHint="@color/textColorHint" />
 
     <ImageView
         android:id="@+id/imageView"
@@ -31,17 +31,19 @@
         android:contentDescription="@null"
         android:scaleType="centerCrop"
         app:srcCompat="@drawable/camera" />
+
     <TextView
         android:id="@+id/imageText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/imageView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="24dp"
         android:text="@string/Take_photo_for_TShirt"
         android:textColor="@color/textColorCamera"
-        android:textStyle="bold"
         android:textSize="20sp"
-        android:layout_marginStart="24dp"
-        android:layout_alignBottom="@+id/imageView"
-        android:layout_centerHorizontal="true"/>
+        android:textStyle="bold" />
+
     <EditText
         android:id="@+id/editOptional"
         android:layout_width="match_parent"
@@ -54,7 +56,8 @@
         android:hint="@string/order_message_instructions"
         android:inputType="textMultiLine"
         android:textColor="@color/textColor"
-        android:textColorHint="@color/textColorHint"/>
+        android:textColorHint="@color/textColorHint" />
+
     <TextView
         android:id="@+id/editCollect"
         android:layout_width="256dp"
@@ -64,7 +67,7 @@
         android:layout_marginBottom="89dp"
         android:text="@string/ready_time"
         android:textColor="@color/textColor"
-        android:textSize="18sp"/>
+        android:textSize="18sp" />
 
     <Spinner
         android:id="@+id/spinner"
@@ -78,6 +81,7 @@
         android:textColor="#ffffff"
         android:textSize="15sp"
         tools:ignore="RtlHardcoded" />
+
     <Button
         android:id="@+id/button"
         android:layout_width="120dp"

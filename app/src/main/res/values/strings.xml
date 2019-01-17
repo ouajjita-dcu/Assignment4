@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Assign4 2019 Abdelkrim Ouajjit</string>
+    <string name="app_name">Assign4 2019 karim Ouajjit</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -26,5 +26,28 @@
         <item>"14"</item>
     </string-array>
 
-    <string name="phone_number">Phone number: (01)63882619</string>
+    <!--  TODO Creating List of collection points  -->
+
+    <string name="store_area">Available item on store Swords</string>
+    <string name="store_address">Address : Rail park Co.Dublin</string>
+    <string name="store_phone">Phone number : (01)63882619</string>
+    <string name="title_store">Online Games</string>
+
+    <!--  TODO Creating the ListView items   -->
+    <string-array name="products_items">
+        <item>" Yoscki Game"</item>
+        <item>" 3"</item>
+        <item>" 4"</item>
+        <item>" 5"</item>
+        <item>"10"</item>
+        <item>"14"</item>
+    </string-array>
+
+    <string name="image_confirm">Image saved successfully </string>
+    <string name="notification_title">Notification!</string>
+    <string name="customer_name">Name</string>
+    <string name="order_message_1">Please find my order attached</string>
+    <string name="order_collect_message">I will collect it in</string>
+    <string name="order_end_message">Regards</string>
+
 </resources>

@@ -29,9 +29,16 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.addTab(tabLayout.newTab());
         tabLayout.addTab(tabLayout.newTab());
 
+        ViewPager mypager = (ViewPager) findViewById(R.id.pager);
+         ViewPagerAdapter myadapter = new ViewPagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
+         mypager.setAdapter(myadapter);
+        tabLayout.setupWithViewPager(mypager);
 
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
+
+    }
+}
+// Create the adapter that will return a fragment for each of the three
+// primary sections of the activity.
 /**
  * getTabCount ()
  * Returns the number of tabs currently registered with the action bar. karim
@@ -39,13 +46,3 @@ public class MainActivity extends AppCompatActivity {
  The one-stop shop for setting up this TabLayout with a ViewPager.
  This is the same as calling setupWithViewPager(ViewPager, boolean) with auto-refresh enabled
  */
-
-         ViewPager mypager = (ViewPager) findViewById(R.id.pager);
-         ViewPagerAdapter myadapter = new ViewPagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
-
-        mypager.setAdapter(myadapter);
-
-        tabLayout.setupWithViewPager(mypager);
-
-    }
-}

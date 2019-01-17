@@ -4,6 +4,7 @@
 
     <!--
     Reference : https://developer.android.com/training/appbar/setting-up#java.
+    Reference : https://developer.android.com/guide/topics/manifest/activity-element#wsoft.
     In the app manifest, setting the <application> element to use one of appcompat's NoActionBar themes.
     Using one of these themes prevents the app from using the native ActionBar class to provide the app bar.
     android:theme="@style/Theme.AppCompat.Light.NoActionBar
@@ -15,6 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity"
+            android:windowSoftInputMode="adjustPan"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
