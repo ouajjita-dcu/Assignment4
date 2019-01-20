@@ -1,6 +1,7 @@
 package com.example.nadine.assign42019abdelkrimouajjit;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -43,6 +45,8 @@ public class OrdersFragment extends Fragment  {
     EditText mCustomerName;
     EditText meditOptional;
     Uri mPhotoURI;
+    ImageView  mImageView;
+
     EditText mdeliveryAddress;
     boolean imageTaken= false;
     static final int REQUEST_TAKE_PHOTO = 2;
@@ -73,16 +77,25 @@ public class OrdersFragment extends Fragment  {
 
          View view =inflater.inflate(R.layout.fragment_orders, container, false);
          Log.d(TAG, "onCreateView: started.");
-        dispatchTakePictureIntent(view);
-        createOrderSummary(view);
+         mCustomerName = view.findViewById(R.id.editCustomer);
+         mImageView = view.findViewById(R.id.imageView);
+        dispatchTakePictureIntent();
+       // createOrderSummary(view);
+        Button send=(Button) view.findViewById(R.id.sendId);
+        send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendEmail();
+            }
+        });
          return view;
     }
     /******************************************************************
      * Capturing images
      ******************************************************************
      */
-    private void dispatchTakePictureIntent(View view) {
-        final ImageView  mImageView = view.findViewById(R.id.imageView);
+    private void dispatchTakePictureIntent() {
+
         mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -105,7 +118,6 @@ public class OrdersFragment extends Fragment  {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        ImageView  mImageView = getView().findViewById(R.id.imageView);
 
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK)
         {
@@ -119,17 +131,29 @@ public class OrdersFragment extends Fragment  {
         Bitmap photo = (Bitmap) data.getExtras().get("data");
         mImageView.setImageBitmap(photo);
     }
-    private String createOrderSummary(View view)
+
+    public void sendEmail()
     {
-        EditText mCustomerName = view.findViewById(R.id.editCustomer);
 
-        String orderMessage = getString(R.string.customer_name) + " " + mCustomerName.getText().toString();
+        String customerName=mCustomerName.getText().toString();
+        String orderMessage = getString(R.string.customer_name) + " " + customerName;
         orderMessage += "\n" + "\n" + getString(R.string.order_message_1);
-        String optionalInstructions = meditOptional.getText().toString();
-
+//        String optionalInstructions = meditOptional.getText().toString();
         orderMessage += "\n" + getString(R.string.order_collect_message) + ((CharSequence) mSpinner.getSelectedItem()).toString() + " days";
-        orderMessage += "\n" + getString(R.string.order_end_message) + "\n" + mCustomerName.getText().toString();
-        return orderMessage;
+        orderMessage += "\n" + getString(R.string.order_end_message) + "\n" + customerName;
+
+        MyListener myListener= (MyListener) getActivity();
+        myListener.sendEmail(orderMessage,mPhotoURI.toString());
+//                    Intent intent = new Intent(Intent.ACTION_SEND);
+//                    intent.setType("*/*");
+//                    intent.putExtra(Intent.EXTRA_EMAIL, new String[]{getString(R.string.to_email)});
+//                    intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.email_subject));
+//                    intent.putExtra(Intent.EXTRA_STREAM,mPhotoURI.toString());
+//                    intent.putExtra(Intent.EXTRA_TEXT, orderMessage);
+//                    if (intent.resolveActivity(getActivity().getPackageManager()) != null)
+//                    {
+//                        getActivity().startActivity(intent);
+//                    }
 
     }
 

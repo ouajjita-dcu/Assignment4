@@ -1,12 +1,14 @@
 package com.example.nadine.assign42019abdelkrimouajjit;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MyListener {
 
     private ViewPagerAdapter mViewPagerAdapter;
 
@@ -35,6 +37,24 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(mypager);
 
 
+    }
+
+
+    @Override
+    public void sendEmail(String parm1, String parm2) {
+
+        Uri fileUri = Uri.parse(parm2);
+
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("*/*");
+        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{getString(R.string.to_email)});
+        intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.email_subject));
+        intent.putExtra(Intent.EXTRA_STREAM,fileUri);
+        intent.putExtra(Intent.EXTRA_TEXT, parm1);
+        if (intent.resolveActivity(getPackageManager()) != null)
+        {
+            startActivity(intent);
+        }
     }
 }
 // Create the adapter that will return a fragment for each of the three
