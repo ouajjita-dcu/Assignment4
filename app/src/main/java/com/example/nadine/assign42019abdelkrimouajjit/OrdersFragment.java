@@ -6,9 +6,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
@@ -28,7 +30,12 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -39,7 +46,7 @@ public class OrdersFragment extends Fragment  {
      * Initialing the variables
      ******************************************************************
      */
-
+    Fragment OrdersFragment = this;
     private static final String TAG = "OrdersFragment";
     Spinner mSpinner;
     EditText mCustomerName;
@@ -99,13 +106,19 @@ public class OrdersFragment extends Fragment  {
         mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                // https://stackoverflow.com/questions/48117511/exposed-beyond-app-through-clipdata-item-geturi.
+
+                StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+                StrictMode.setVmPolicy(builder.build());
+
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
                 String imageFileName = "my_tshirt_image_" + timeStamp + ".jpg";
                 File file = new File(Environment.getExternalStorageDirectory(), imageFileName);
                 mPhotoURI = Uri.fromFile(file);
                 Log.i(TAG, mPhotoURI.toString());
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, mPhotoURI.toString());
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, mPhotoURI);
                 startActivityForResult(intent, REQUEST_TAKE_PHOTO);
             }
 
@@ -116,11 +129,14 @@ public class OrdersFragment extends Fragment  {
      ******************************************************************
      */
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    public void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
+
+        super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
 
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK)
         {
+
+
             CharSequence text = "Image Taken successfully";
             int duration = Toast.LENGTH_SHORT;
             Toast toast = Toast.makeText(getContext(), text, duration);
@@ -128,8 +144,14 @@ public class OrdersFragment extends Fragment  {
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle(R.string.notification_title).setMessage(R.string.image_confirm).setPositiveButton("OK", null).show();
-        Bitmap photo = (Bitmap) data.getExtras().get("data");
-        mImageView.setImageBitmap(photo);
+
+//        Glide.with(OrdersFragment)
+//                .load(mPhotoURI)
+//                .into(mImageView);
+////
+//       Bitmap photo = (Bitmap) imageReturnedIntent.getExtras().get("imageReturnedIntent");
+//        mImageView.setImageBitmap(photo);
+
     }
 
     public void sendEmail()
@@ -141,19 +163,19 @@ public class OrdersFragment extends Fragment  {
 //        String optionalInstructions = meditOptional.getText().toString();
         orderMessage += "\n" + getString(R.string.order_collect_message) + ((CharSequence) mSpinner.getSelectedItem()).toString() + " days";
         orderMessage += "\n" + getString(R.string.order_end_message) + "\n" + customerName;
-
-        MyListener myListener= (MyListener) getActivity();
-        myListener.sendEmail(orderMessage,mPhotoURI.toString());
-//                    Intent intent = new Intent(Intent.ACTION_SEND);
-//                    intent.setType("*/*");
-//                    intent.putExtra(Intent.EXTRA_EMAIL, new String[]{getString(R.string.to_email)});
-//                    intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.email_subject));
-//                    intent.putExtra(Intent.EXTRA_STREAM,mPhotoURI.toString());
-//                    intent.putExtra(Intent.EXTRA_TEXT, orderMessage);
-//                    if (intent.resolveActivity(getActivity().getPackageManager()) != null)
-//                    {
-//                        getActivity().startActivity(intent);
-//                    }
+//
+//        MyListener myListener= (MyListener) getActivity();
+//        myListener.sendEmail(orderMessage,mPhotoURI.toString());
+                    Intent intent = new Intent(Intent.ACTION_SEND);
+                    intent.setType("*/*");
+                    intent.putExtra(Intent.EXTRA_EMAIL, new String[]{getString(R.string.to_email)});
+                    intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.email_subject));
+                    intent.putExtra(Intent.EXTRA_STREAM,mPhotoURI);
+                    intent.putExtra(Intent.EXTRA_TEXT, orderMessage);
+                    if (intent.resolveActivity(getActivity().getPackageManager()) != null)
+                    {
+                        getActivity().startActivity(intent);
+                    }
 
     }
 
