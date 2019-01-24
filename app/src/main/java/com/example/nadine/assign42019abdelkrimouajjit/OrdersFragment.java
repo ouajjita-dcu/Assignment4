@@ -15,6 +15,7 @@ import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
 import android.util.Log;
@@ -34,14 +35,16 @@ import com.bumptech.glide.Glide;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import static android.app.Activity.RESULT_OK;
 
-public class OrdersFragment extends Fragment  {
+public class OrdersFragment extends Fragment {
     /*****************************************************************
      * Initialing the variables
      ******************************************************************
@@ -51,13 +54,15 @@ public class OrdersFragment extends Fragment  {
     Spinner mSpinner;
     EditText mCustomerName;
     EditText meditOptional;
-    Uri mPhotoURI;
-    ImageView  mImageView;
+    Uri mPhotoURI;           //declare the filename and the Uri for use below
+    File mPhotoFile = null;
+    ImageView mImageView;
 
     EditText mdeliveryAddress;
-    boolean imageTaken= false;
+    boolean imageTaken = false;
     static final int REQUEST_TAKE_PHOTO = 2;
     private static final String TAG1 = "Assign3";
+
     /*****************************************************************
      * Calling the constructor.
      ******************************************************************
@@ -65,15 +70,13 @@ public class OrdersFragment extends Fragment  {
     public OrdersFragment() {
         // Required empty public constructor
     }
-    /*****************************************************************
-     * Inflate the layout.
-     ******************************************************************
-     */
+    // Inflate the layout
+
     /**
-     *
      * The onCreateView method is called when Fragment should create its View object hierarchy,
      * either dynamically or via XML layout inflation.
-     * @param inflater : Inflate the layout for this fragment.Defines the xml file for the fragment
+     *
+     * @param inflater           : Inflate the layout for this fragment.Defines the xml file for the fragment
      * @param container
      * @param savedInstanceState
      * @return
@@ -82,48 +85,96 @@ public class OrdersFragment extends Fragment  {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-         View view =inflater.inflate(R.layout.fragment_orders, container, false);
-         Log.d(TAG, "onCreateView: started.");
-         mCustomerName = view.findViewById(R.id.editCustomer);
-         mImageView = view.findViewById(R.id.imageView);
-        dispatchTakePictureIntent();
-       // createOrderSummary(view);
-        Button send=(Button) view.findViewById(R.id.sendId);
+        View view = inflater.inflate(R.layout.fragment_orders, container, false);
+        Log.d(TAG, "onCreateView: started.");
+        mCustomerName = view.findViewById(R.id.editCustomer);
+        mImageView = view.findViewById(R.id.imageView);
+
+        mImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dispatchTakePictureIntent();
+            }
+
+        });
+        createTempFile();
+        // createOrderSummary(view);
+        Button send = (Button) view.findViewById(R.id.sendId);
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 sendEmail();
             }
         });
-         return view;
+        return view;
     }
-    /******************************************************************
-     * Capturing images
-     ******************************************************************
-     */
+    // Capturing images
+
+    private File createTempFile() {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.ENGLISH).format(new Date());
+        String imageFileName = "My_Image_" + timeStamp + "_";
+//we should get a general reference to externalstorage for images.
+        File storageDir = getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES); //declare an image file
+        File myImage = null;
+//try catch, ensure it doesn't crash if the file fails to be taken
+        try {
+//make an empty file
+            myImage = File.createTempFile(imageFileName, ".jpg", storageDir);
+        } catch (IOException e) {
+            String error = String.valueOf(e);
+            Log.e(TAG, error);
+//toaster alert to let the user know there's an issue
+            Toast toast = Toast.makeText(getContext(), "Please try retaking your photo!", Toast.LENGTH_LONG);
+            toast.show();
+        }
+        return myImage;
+
+    }
+
     private void dispatchTakePictureIntent() {
 
-        mImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                // https://stackoverflow.com/questions/48117511/exposed-beyond-app-through-clipdata-item-geturi.
-
-                StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
-                StrictMode.setVmPolicy(builder.build());
-
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-                String imageFileName = "my_tshirt_image_" + timeStamp + ".jpg";
-                File file = new File(Environment.getExternalStorageDirectory(), imageFileName);
-                mPhotoURI = Uri.fromFile(file);
-                Log.i(TAG, mPhotoURI.toString());
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, mPhotoURI);
-                startActivityForResult(intent, REQUEST_TAKE_PHOTO);
+//start the intent.
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE); // check to see if the phone actually has a camera.
+        if (takePictureIntent.resolveActivity(getContext().getPackageManager()) != null) // first let’s call our new method to get the photofile
+        {
+            mPhotoFile = createTempFile();
+// Continue only if the File was successfully created
+            if (mPhotoFile != null) {
+//here we grab the Uri, (note we are using the authority it's our applicationID again)
+                mPhotoURI = FileProvider.getUriForFile(getContext(), "com.colette.android.assign3", mPhotoFile); //take the photo replacing the file at the location.
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, mPhotoURI);
+                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+            } else {
+                Toast toast = Toast.makeText(getContext(), "There was a problem saving please retry", Toast.LENGTH_LONG);
+                toast.show();
             }
+            }else{
+//toaster alert to let the user know there's an issue with the camera
+            Toast toast = Toast.makeText(getContext(), "There seems to be an issue with your camera", Toast.LENGTH_LONG);
+        }
 
-        });
+
+        }
     }
+
+    // https://stackoverflow.com/questions/48117511/exposed-beyond-app-through-clipdata-item-geturi.
+//
+//                StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+//                StrictMode.setVmPolicy(builder.build());
+//
+//                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+//                String imageFileName = "my_tshirt_image_" + timeStamp + ".jpg";
+//                File file = new File(Environment.getExternalStorageDirectory(), imageFileName);
+//                mPhotoURI = Uri.fromFile(file);
+//                Log.i(TAG, mPhotoURI.toString());
+//                intent.putExtra(MediaStore.EXTRA_OUTPUT, mPhotoURI);
+//                startActivityForResult(intent, REQUEST_TAKE_PHOTO);
+
+
+
+
     /******************************************************************
      *  The activity returns with the photo.
      ******************************************************************
@@ -145,9 +196,9 @@ public class OrdersFragment extends Fragment  {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle(R.string.notification_title).setMessage(R.string.image_confirm).setPositiveButton("OK", null).show();
 
-//        Glide.with(OrdersFragment)
-//                .load(mPhotoURI)
-//                .into(mImageView);
+        Glide.with(OrdersFragment)
+                .load(mPhotoURI)
+                .into(mImageView);
 ////
 //       Bitmap photo = (Bitmap) imageReturnedIntent.getExtras().get("imageReturnedIntent");
 //        mImageView.setImageBitmap(photo);
