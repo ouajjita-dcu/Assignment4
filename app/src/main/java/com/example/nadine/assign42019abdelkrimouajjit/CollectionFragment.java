@@ -62,8 +62,10 @@ public class CollectionFragment extends Fragment {
             @SuppressLint("ResourceAsColor")
             @Override
             public void onItemClick(AdapterView<?> AdapterView, View view, int position, long id) {
+
                 TextView itemClicked=(TextView)view.findViewById(R.id.store_name);
                 view.setBackgroundColor(R.color.colorAccent);
+
 
                 SharedPreferences prefs=getActivity().getSharedPreferences("myprefs",Context.MODE_PRIVATE);
                 SharedPreferences.Editor edit=prefs.edit();

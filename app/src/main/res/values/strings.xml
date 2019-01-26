@@ -10,7 +10,7 @@
 
     <!-- TODO: Reference all the hardcode -->
     <string name="Enter_Your_Name">Enter Your Name</string>
-    <string name="Take_photo_for_TShirt">Take photo for TShirt</string>
+    <string name="Take_photo_for_TShirt">Take photo </string>
     <string name="order_message_instructions">Delivery Address -or- For Collection</string>
     <string name="ready_time">Delivery/Collection in (days)</string>
     <string name="Send_Order">Send Order</string>

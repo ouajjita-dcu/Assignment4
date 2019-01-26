@@ -87,18 +87,17 @@ public class OrdersFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_orders, container, false);
         Log.d(TAG, "onCreateView: started.");
-        mCustomerName = view.findViewById(R.id.editCustomer);
-        mImageView = view.findViewById(R.id.imageView);
 
+        mdeliveryAddress = (EditText) view.findViewById(R.id.editOptional);
+        mImageView = view.findViewById(R.id.imageView);
         mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                createTempFile();
                 dispatchTakePictureIntent();
             }
 
         });
-        createTempFile();
-        // createOrderSummary(view);
         Button send = (Button) view.findViewById(R.id.sendId);
         send.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,6 +105,9 @@ public class OrdersFragment extends Fragment {
                 sendEmail();
             }
         });
+        SharedPreferences prefs=getActivity().getSharedPreferences("myprefs",Context.MODE_PRIVATE);
+        String myStore=prefs.getString("store","none");
+        mdeliveryAddress.setText(myStore);
         return view;
     }
     // Capturing images
@@ -114,17 +116,17 @@ public class OrdersFragment extends Fragment {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.ENGLISH).format(new Date());
         String imageFileName = "My_Image_" + timeStamp + "_";
-//we should get a general reference to externalstorage for images.
+        //we should get a general reference to externalstorage for images.
         File storageDir = getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES); //declare an image file
         File myImage = null;
-//try catch, ensure it doesn't crash if the file fails to be taken
+        //try catch, ensure it doesn't crash if the file fails to be taken
         try {
-//make an empty file
+        //make an empty file
             myImage = File.createTempFile(imageFileName, ".jpg", storageDir);
         } catch (IOException e) {
             String error = String.valueOf(e);
             Log.e(TAG, error);
-//toaster alert to let the user know there's an issue
+        //toaster alert to let the user know there's an issue
             Toast toast = Toast.makeText(getContext(), "Please try retaking your photo!", Toast.LENGTH_LONG);
             toast.show();
         }
@@ -134,15 +136,14 @@ public class OrdersFragment extends Fragment {
 
     private void dispatchTakePictureIntent() {
 
-//start the intent.
+        //start the intent.
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE); // check to see if the phone actually has a camera.
         if (takePictureIntent.resolveActivity(getContext().getPackageManager()) != null) // first let’s call our new method to get the photofile
         {
             mPhotoFile = createTempFile();
-// Continue only if the File was successfully created
-            if (mPhotoFile != null) {
-//here we grab the Uri, (note we are using the authority it's our applicationID again)
-                mPhotoURI = FileProvider.getUriForFile(getContext(), "com.colette.android.assign3", mPhotoFile); //take the photo replacing the file at the location.
+        // Continue only if the File was successfully created
+            if (mPhotoFile != null) {//here we grab the Uri, (note we are using the authority it's our applicationID again)
+                mPhotoURI = FileProvider.getUriForFile(getContext(), "com.example.nadine.assign42019abdelkrimouajjit.FileProvider", mPhotoFile); //take the photo replacing the file at the location.
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, mPhotoURI);
                 startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
             } else {
@@ -150,35 +151,13 @@ public class OrdersFragment extends Fragment {
                 toast.show();
             }
             }else{
-//toaster alert to let the user know there's an issue with the camera
+        //toaster alert to let the user know there's an issue with the camera
             Toast toast = Toast.makeText(getContext(), "There seems to be an issue with your camera", Toast.LENGTH_LONG);
         }
 
 
         }
-    }
 
-    // https://stackoverflow.com/questions/48117511/exposed-beyond-app-through-clipdata-item-geturi.
-//
-//                StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
-//                StrictMode.setVmPolicy(builder.build());
-//
-//                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//                String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-//                String imageFileName = "my_tshirt_image_" + timeStamp + ".jpg";
-//                File file = new File(Environment.getExternalStorageDirectory(), imageFileName);
-//                mPhotoURI = Uri.fromFile(file);
-//                Log.i(TAG, mPhotoURI.toString());
-//                intent.putExtra(MediaStore.EXTRA_OUTPUT, mPhotoURI);
-//                startActivityForResult(intent, REQUEST_TAKE_PHOTO);
-
-
-
-
-    /******************************************************************
-     *  The activity returns with the photo.
-     ******************************************************************
-     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
 
@@ -195,38 +174,51 @@ public class OrdersFragment extends Fragment {
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle(R.string.notification_title).setMessage(R.string.image_confirm).setPositiveButton("OK", null).show();
-
+        imageTaken = true;
         Glide.with(OrdersFragment)
                 .load(mPhotoURI)
                 .into(mImageView);
-////
-//       Bitmap photo = (Bitmap) imageReturnedIntent.getExtras().get("imageReturnedIntent");
-//        mImageView.setImageBitmap(photo);
 
     }
 
     public void sendEmail()
     {
-
+        mCustomerName = (EditText) getView().findViewById(R.id.editCustomer);
         String customerName=mCustomerName.getText().toString();
-        String orderMessage = getString(R.string.customer_name) + " " + customerName;
-        orderMessage += "\n" + "\n" + getString(R.string.order_message_1);
-//        String optionalInstructions = meditOptional.getText().toString();
-        orderMessage += "\n" + getString(R.string.order_collect_message) + ((CharSequence) mSpinner.getSelectedItem()).toString() + " days";
-        orderMessage += "\n" + getString(R.string.order_end_message) + "\n" + customerName;
-//
-//        MyListener myListener= (MyListener) getActivity();
-//        myListener.sendEmail(orderMessage,mPhotoURI.toString());
-                    Intent intent = new Intent(Intent.ACTION_SEND);
-                    intent.setType("*/*");
-                    intent.putExtra(Intent.EXTRA_EMAIL, new String[]{getString(R.string.to_email)});
-                    intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.email_subject));
-                    intent.putExtra(Intent.EXTRA_STREAM,mPhotoURI);
-                    intent.putExtra(Intent.EXTRA_TEXT, orderMessage);
-                    if (intent.resolveActivity(getActivity().getPackageManager()) != null)
-                    {
-                        getActivity().startActivity(intent);
-                    }
+        mdeliveryAddress = (EditText) getView().findViewById(R.id.editOptional);
+        String deliveryAddress = mdeliveryAddress.getText().toString();
+
+        if (customerName.matches("")) {
+            Toast.makeText(getContext(), "Please enter your Name", Toast.LENGTH_SHORT).show();
+
+        } else if  (deliveryAddress.matches(""))
+        {
+            Toast.makeText(getContext(), "Please enter your delivery address", Toast.LENGTH_SHORT).show();
+        }else if (!imageTaken)
+        {
+            Toast.makeText(getContext(), "Please take a picture ", Toast.LENGTH_SHORT).show();
+        } else
+
+        {
+
+            String orderMessage = getString(R.string.customer_name) + " " + customerName;
+            orderMessage += "\n" + "\n" + getString(R.string.order_message_1);
+            String optionalInstructions = meditOptional.getText().toString();
+            orderMessage += "\n" + getString(R.string.order_collect_message) + ((CharSequence) mSpinner.getSelectedItem()).toString() + " days";
+            orderMessage += "\n" + optionalInstructions ;
+            orderMessage += "\n" + getString(R.string.order_end_message) + "\n" + customerName;
+
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.setType("*/*");
+            intent.putExtra(Intent.EXTRA_EMAIL, new String[]{getString(R.string.to_email)});
+            intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.email_subject));
+            intent.putExtra(Intent.EXTRA_STREAM,mPhotoURI);
+            intent.putExtra(Intent.EXTRA_TEXT, orderMessage);
+            if (intent.resolveActivity(getActivity().getPackageManager()) != null)
+            {
+                getActivity().startActivity(intent);
+            }
+        }
 
     }
 
@@ -254,35 +246,8 @@ public class OrdersFragment extends Fragment {
 
 
     }
+    public void myitems() {
+        trackItems mitems=new trackItems();
+
+    }
 }
-/**
- *
- * This method is called after the parent Activity's onCreate() method has completed.
- * Accessing the view hierarchy of the parent activity must be done in the onActivityCreated.
- * At this point, it is safe to search for activity View objects by their ID,
- * @param savedInstanceState
- *
- * getActivity(), which returns the activity associated with a fragment.
- * The activity is a context (since Activity extends Context).
- */
- /*   @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        ImageView  mImageView = getView().findViewById(R.id.imageView);
-        mImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-                String imageFileName = "my_tshirt_image_" + timeStamp + ".jpg";
-                File file = new File(Environment.getExternalStorageDirectory(), imageFileName);
-                mPhotoURI = Uri.fromFile(file);
-                Log.i(TAG, mPhotoURI.toString());
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, mPhotoURI.toString());
-                getActivity().startActivityForResult(intent, REQUEST_TAKE_PHOTO);
-
-            }
-        });
-
-    }*/
