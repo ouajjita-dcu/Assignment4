@@ -106,7 +106,7 @@ public class OrdersFragment extends Fragment {
             }
         });
         SharedPreferences prefs=getActivity().getSharedPreferences("myprefs",Context.MODE_PRIVATE);
-        String myStore=prefs.getString("store","none");
+        String myStore=prefs.getString("store","Delivery Address");
         mdeliveryAddress.setText(myStore);
         return view;
     }
@@ -188,6 +188,10 @@ public class OrdersFragment extends Fragment {
         mdeliveryAddress = (EditText) getView().findViewById(R.id.editOptional);
         String deliveryAddress = mdeliveryAddress.getText().toString();
 
+        SharedPreferences prefs=getActivity().getSharedPreferences("myprefsGames",Context.MODE_PRIVATE);
+        String mySelectedGame=prefs.getString("itemSelected","none");
+
+
         if (customerName.matches("")) {
             Toast.makeText(getContext(), "Please enter your Name", Toast.LENGTH_SHORT).show();
 
@@ -197,13 +201,19 @@ public class OrdersFragment extends Fragment {
         }else if (!imageTaken)
         {
             Toast.makeText(getContext(), "Please take a picture ", Toast.LENGTH_SHORT).show();
-        } else
-
+        }
+//        else if (mPhotoURI.equals(Uri.EMPTY)&& (mPhotoURI == null))
+//        {
+//            Toast.makeText(getContext(), "No picture was taken,Please re-take your picture ", Toast.LENGTH_SHORT).show();
+//        }
+        else
         {
 
             String orderMessage = getString(R.string.customer_name) + " " + customerName;
             orderMessage += "\n" + "\n" + getString(R.string.order_message_1);
+            orderMessage += "\n" + "Your selected item is : "+ mySelectedGame ;
             String optionalInstructions = meditOptional.getText().toString();
+
             orderMessage += "\n" + getString(R.string.order_collect_message) + ((CharSequence) mSpinner.getSelectedItem()).toString() + " days";
             orderMessage += "\n" + optionalInstructions ;
             orderMessage += "\n" + getString(R.string.order_end_message) + "\n" + customerName;
@@ -246,8 +256,5 @@ public class OrdersFragment extends Fragment {
 
 
     }
-    public void myitems() {
-        trackItems mitems=new trackItems();
 
-    }
 }

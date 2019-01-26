@@ -45,13 +45,13 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
 
          View rootView=inflater.inflate(R.layout.fragment_home, container, false);
-//        SharedPreferences prefs=getActivity().getSharedPreferences("myprefs",Context.MODE_PRIVATE);
-//        String myStore=prefs.getString("store","none");
-//        String myGame=prefs.getString("game","none");
-//       TextView firstData=(TextView)rootView.findViewById(R.id.textView5);
-//        TextView secondData=(TextView)rootView.findViewById(R.id.textView3);
-//       firstData.setText(myStore);
-//       secondData.setText("Your game selected is : "+myGame);
+        SharedPreferences prefs=getActivity().getSharedPreferences("myprefsGames",Context.MODE_PRIVATE);
+        String myStore=prefs.getString("store","Please select your store from collection tap");
+        String myGame=prefs.getString("itemSelected","Please select your game from product tap");
+        TextView firstData=(TextView)rootView.findViewById(R.id.textView5);
+        TextView secondData=(TextView)rootView.findViewById(R.id.textView3);
+      firstData.setText(myStore);
+       secondData.setText("Your game selected is : "+myGame);
 
         return rootView;
 

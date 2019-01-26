@@ -67,7 +67,7 @@ public class CollectionFragment extends Fragment {
                 view.setBackgroundColor(R.color.colorAccent);
 
 
-                SharedPreferences prefs=getActivity().getSharedPreferences("myprefs",Context.MODE_PRIVATE);
+                SharedPreferences prefs=getActivity().getSharedPreferences("myprefsGames",Context.MODE_PRIVATE);
                 SharedPreferences.Editor edit=prefs.edit();
                 edit.putString("store", itemClicked.getText().toString());
                 edit.apply();

@@ -1,5 +1,6 @@
 package com.example.nadine.assign42019abdelkrimouajjit;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.design.widget.TabLayout;
@@ -11,7 +12,7 @@ import android.support.v7.widget.Toolbar;
 public class MainActivity extends AppCompatActivity  {
 
     private ViewPagerAdapter mViewPagerAdapter;
-
+    public static Context contextOfApplication;
     /**
      * The {@link ViewPager} that will host the section contents.
      */
@@ -21,6 +22,8 @@ public class MainActivity extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -36,9 +39,11 @@ public class MainActivity extends AppCompatActivity  {
          mypager.setAdapter(myadapter);
         tabLayout.setupWithViewPager(mypager);
 
-
     }
 
+    public static Context getContextOfApplication(){
+        return contextOfApplication;
+    }
 
 }
 // Create the adapter that will return a fragment for each of the three

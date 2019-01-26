@@ -2,6 +2,8 @@ package com.example.nadine.assign42019abdelkrimouajjit;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -20,6 +22,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 
 import java.util.ArrayList;
 
@@ -46,7 +49,7 @@ public class ProductsFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         final ArrayList<ProductsList> gamesList = new ArrayList<ProductsList>();
-        //final ArrayList<String> trackItems = new ArrayList<>();
+
 
         gamesList.add(new ProductsList("Yoscki Game", "Adventure", R.drawable.yoschi));
         gamesList.add(new ProductsList("Cute Game", "Draw And Fill", R.drawable.cute));
@@ -81,31 +84,32 @@ public class ProductsFragment extends Fragment {
             }
 
             private void displayInputDialog(final String gameName) {
-                d=new Dialog(getActivity());
-                d.setTitle("Hello");
-                d.setContentView(R.layout.dialogue_window);
-                final TextView nameEditTxt= (TextView) d.findViewById(R.id.nameEditText);
-                Button addBtn= (Button) d.findViewById(R.id.addBtn);
-                Button updateBtn= (Button) d.findViewById(R.id.updateBtn);
-                nameEditTxt.setText(gameName+" was selected");
-                addBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        trackItems.save(gameName);
-                        nameEditTxt.setText("");
-                        d.dismiss();
-                    }
-                });
-                updateBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        //GET DATA
-                        nameEditTxt.setText("");
-                        d.dismiss();
-                    }
-                });
 
-                d.show();
+                // 1. Instantiate an AlertDialog.Builder with its constructor
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                // 2. Chain together various setter methods to set the dialog characteristics
+                builder.setMessage("Do you want to add "+gameName + " to your order?").setCancelable(false).setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        SharedPreferences prefs=getContext().getSharedPreferences("myprefsGames",Context.MODE_PRIVATE);
+                        SharedPreferences.Editor edit=prefs.edit();
+                        edit.putString("itemSelected", gameName);
+                        edit.apply();
+                        Toast.makeText(getContext(),"The product "+gameName + " added to your order",Toast.LENGTH_LONG).show();
+                        dialog.dismiss();
+                    }
+                })
+                        .setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+
+                                        dialog.cancel();
+                                    }
+                                });
+                 AlertDialog alert=builder.create();
+                 alert.setTitle("Shopping Basket");
+                 alert.show();
+
             }
 
         });
