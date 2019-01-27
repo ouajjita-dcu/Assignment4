@@ -10,8 +10,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class HomeFragment extends Fragment {
@@ -45,14 +47,33 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
 
          View rootView=inflater.inflate(R.layout.fragment_home, container, false);
-        SharedPreferences prefs=getActivity().getSharedPreferences("myprefsGames",Context.MODE_PRIVATE);
-        String myStore=prefs.getString("store","Please select your store from collection tap");
+        final SharedPreferences prefs=getActivity().getSharedPreferences("myprefsGames",Context.MODE_PRIVATE);
+        final String myStore=prefs.getString("store","Please select your store from collection tap");
         String myGame=prefs.getString("itemSelected","Please select your game from product tap");
-        TextView firstData=(TextView)rootView.findViewById(R.id.textView5);
-        TextView secondData=(TextView)rootView.findViewById(R.id.textView3);
-      firstData.setText(myStore);
-       secondData.setText("Your game selected is : "+myGame);
-
+        final TextView dataStore=(TextView)rootView.findViewById(R.id.textView5);
+        final TextView dataGame=(TextView)rootView.findViewById(R.id.textView3);
+        dataStore.setText(myStore);
+        dataGame.setText("Your game selected is : "+myGame);
+        ImageView deleteGame=(ImageView) rootView.findViewById(R.id.deleteGame);
+       deleteGame.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               prefs.edit().remove("store").apply();
+               dataGame.setText("Please select your game from products tap");
+               Toast toast = Toast.makeText(getContext(), "Your item was removed from the basket", Toast.LENGTH_LONG);
+               toast.show();
+           }
+       });
+        ImageView deleteStore=(ImageView) rootView.findViewById(R.id.deleteStore);
+       deleteStore.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               prefs.edit().remove("itemSelected").apply();
+               dataStore.setText("Please select your store from collection tap");
+               Toast toast = Toast.makeText(getContext(), "Your store collection was removed.", Toast.LENGTH_LONG);
+               toast.show();
+           }
+       });
         return rootView;
 
     }

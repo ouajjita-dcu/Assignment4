@@ -26,11 +26,35 @@
         <item>"14"</item>
     </string-array>
 
-    <!--  TODO Creating List of collection points  -->
+    <!--   Creating List of collection points  -->
 
-    <string name="store_area">Available item on store Swords</string>
-    <string name="store_address">Address : Rail park Co.Dublin</string>
-    <string name="store_phone">Phone number : (01)63882619</string>
+    <string name="store_swords">Available item on store Swords</string>
+    <string name="swords_address">Address : Rail park Co.Dublin</string>
+    <string name="swords_phone">Phone number : (01)63882619</string>
+
+    <string name="store_dublin15">Available item on store dublin15</string>
+    <string name="dublin15_address">Address : Business hotel Dublin15</string>
+    <string name="dublin15_phone">Phone number : (01)15151515</string>
+
+    <string name="store_dublin14">Available item on store dublin14</string>
+    <string name="dublin14_address">Address : Mount Street Dublin14</string>
+    <string name="dublin14_phone">Phone number : (01)14141414</string>
+
+    <string name="store_dublin2">Available item on store dublin13</string>
+    <string name="dublin2_address">Address : Redmond Street Dublin13</string>
+    <string name="dublin2_phone">Phone number : (01)13731313</string>
+
+    <string name="store_dublin1">Available item on store dublin1</string>
+    <string name="dublin1_address">Address : Circular Rd Dublin1</string>
+    <string name="dublin1_phone">Phone number : (01)11790181</string>
+
+    <string name="store_dublin3">Available item on store dublin3</string>
+    <string name="dublin3_address">Address : New Street 112 Dublin3</string>
+    <string name="dublin3_phone">Phone number : (01)313131313</string>
+
+
+
+    <!--   Creating List of home fragmnet  -->
     <string name="title_store">Online Games</string>
 
     <!--  TODO Creating the ListView items   -->

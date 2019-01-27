@@ -44,15 +44,14 @@ public class CollectionFragment extends Fragment {
 
         final ArrayList<CollectionsList> collectionList = new ArrayList<CollectionsList>();
 
+      // List of collection added on strings xml file
+        collectionList.add(new CollectionsList(getResources().getString(R.string.store_swords), getResources().getString(R.string.swords_address), getResources().getString(R.string.swords_phone)));
+        collectionList.add(new CollectionsList(getResources().getString(R.string.store_dublin1), getResources().getString(R.string.dublin1_address), getResources().getString(R.string.dublin1_phone)));
+        collectionList.add(new CollectionsList(getResources().getString(R.string.store_dublin2), getResources().getString(R.string.dublin2_address), getResources().getString(R.string.dublin2_phone)));
+        collectionList.add(new CollectionsList(getResources().getString(R.string.store_dublin3), getResources().getString(R.string.dublin3_address), getResources().getString(R.string.dublin3_phone)));
+        collectionList.add(new CollectionsList(getResources().getString(R.string.store_dublin14), getResources().getString(R.string.dublin14_address), getResources().getString(R.string.dublin14_phone)));
+        collectionList.add(new CollectionsList(getResources().getString(R.string.store_dublin15), getResources().getString(R.string.dublin15_address), getResources().getString(R.string.dublin15_phone)));
 
-        collectionList.add(new CollectionsList(getResources().getString(R.string.store_area), getResources().getString(R.string.store_address), getResources().getString(R.string.store_phone)));
-        collectionList.add(new CollectionsList(getResources().getString(R.string.store_area), getResources().getString(R.string.store_address), getResources().getString(R.string.store_phone)));
-        collectionList.add(new CollectionsList(getResources().getString(R.string.store_area), getResources().getString(R.string.store_address), getResources().getString(R.string.store_phone)));
-        collectionList.add(new CollectionsList(getResources().getString(R.string.store_area), getResources().getString(R.string.store_address), getResources().getString(R.string.store_phone)));
-        collectionList.add(new CollectionsList(getResources().getString(R.string.store_area), getResources().getString(R.string.store_address), getResources().getString(R.string.store_phone)));
-        collectionList.add(new CollectionsList(getResources().getString(R.string.store_area), getResources().getString(R.string.store_address), getResources().getString(R.string.store_phone)));
-        collectionList.add(new CollectionsList(getResources().getString(R.string.store_area), getResources().getString(R.string.store_address), getResources().getString(R.string.store_phone)));
-        collectionList.add(new CollectionsList(getResources().getString(R.string.store_area), getResources().getString(R.string.store_address), getResources().getString(R.string.store_phone)));
 
         CollectionsAdapter collectionAdapter = new CollectionsAdapter(getActivity(), collectionList);
         final ListView listView = (ListView) getView().findViewById(R.id.listview_fragment_collection);
@@ -67,7 +66,7 @@ public class CollectionFragment extends Fragment {
                 view.setBackgroundColor(R.color.colorAccent);
 
 
-                SharedPreferences prefs=getActivity().getSharedPreferences("myprefsGames",Context.MODE_PRIVATE);
+                SharedPreferences prefs=getActivity().getSharedPreferences("myprefs",Context.MODE_PRIVATE);
                 SharedPreferences.Editor edit=prefs.edit();
                 edit.putString("store", itemClicked.getText().toString());
                 edit.apply();
