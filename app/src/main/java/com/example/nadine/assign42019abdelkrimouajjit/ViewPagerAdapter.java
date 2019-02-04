@@ -21,9 +21,14 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
         this.mNumOfTabs = NumOfTabs;
     }
 
+    /**
+     *
+     * @param position:ViewPagerAdapter
+     * @return : Returning the collectionTab.
+     */
     @Override
+    // Returns total number of fragments.
     public Fragment getItem(int position) {
-
         switch (position)
         {
             case Home:
@@ -47,15 +52,20 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     public int getCount() {
         return mNumOfTabs;
     }
+    // Returns the page title for the top indicator
     public CharSequence getPageTitle(int position) {
         switch (position) {
             case 0:
+                // This will show home fragment.
                 return UI_TAB_HOME;
             case 1:
+                // This will show product fragment.
                 return UI_TAB_PRODUCTS;
             case 2:
+                // This will show order fragment.
                 return UI_TAB_ORDERS;
             case 3:
+                // This will show collection fragment.
                 return UI_TAB_COLLECTION;
 
             default:

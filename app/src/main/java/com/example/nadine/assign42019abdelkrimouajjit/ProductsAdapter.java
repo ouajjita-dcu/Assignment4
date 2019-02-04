@@ -13,11 +13,18 @@ import java.util.ArrayList;
 public class ProductsAdapter extends ArrayAdapter<ProductsList> {
 
     public ProductsAdapter(Activity context, ArrayList<ProductsList> androidFlavors) {
-
         super(context, 0, androidFlavors);
     }
 
+    /**
+     * @param position: The position of the listItemView.
+     * @param convertView :This reused View is the convertView.
+     * @param parent:The parent is provided that can inflate your view into that for proper layout parameters.
+     * @return : returning the listItemView.
+     */
     @Override
+    //The adapters are built to reuse Views, when a View is scrolled so that is no longer visible,
+    // it can be used for one of the new Views appearing.
     public View getView(int position, View convertView, ViewGroup parent) {
         View listItemView = convertView;
         if(listItemView == null) {
@@ -26,13 +33,14 @@ public class ProductsAdapter extends ArrayAdapter<ProductsList> {
         }
         ProductsList currentAndroidFlavor = getItem(position);
 
-        TextView nameTextView = (TextView) listItemView.findViewById(R.id.version_name);
+        TextView nameTextView = listItemView.findViewById(R.id.version_name);
         nameTextView.setText(currentAndroidFlavor.getVersionName());
 
-        TextView numberTextView = (TextView) listItemView.findViewById(R.id.version_number);
+        TextView numberTextView = listItemView.findViewById(R.id.version_number);
         numberTextView.setText(currentAndroidFlavor.getVersionNumber());
-        ImageView iconView = (ImageView) listItemView.findViewById(R.id.list_item_icon);
+        ImageView iconView =listItemView.findViewById(R.id.list_item_icon);
         iconView.setImageResource(currentAndroidFlavor.getImageResourceId());
+        //The LayoutInflater takes your layout XML-files and creates different View-objects from its contents.
         return listItemView;
     }
 

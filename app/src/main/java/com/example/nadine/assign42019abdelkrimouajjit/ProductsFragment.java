@@ -36,6 +36,13 @@ public class ProductsFragment extends Fragment {
     }
     Dialog d;
 
+    /**
+     *
+     * @param inflater:onCreateView() provides a LayoutInflater object called inflater.
+     * @param container:parameter passed to onCreateView() is the parent ViewGroup (from the activity's layout)in which the fragment layout is inserted.
+     * @param savedInstanceState:parameter is a Bundle that provides data about the previous instance of the fragment,if the fragment is being resumed
+     * @return:return a View that is the root of the fragment's layout by using the inflate() method that takes three arguments.
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -70,14 +77,14 @@ public class ProductsFragment extends Fragment {
         final ProductsAdapter gameAdapter = new ProductsAdapter(getActivity(), gamesList);
 
         // Get a reference to the ListView, and attach the adapter to the listView.
-        ListView listView = (ListView) getView().findViewById(R.id.listview_fragment);
+        ListView listView = getView().findViewById(R.id.listview_fragment);
         listView.setAdapter(gameAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @SuppressLint("ResourceAsColor")
             @Override
             public void onItemClick(AdapterView<?> AdapterView, View view, int position, long id) {
-                TextView itemClicked=(TextView)view.findViewById(R.id.version_name);
+                TextView itemClicked=view.findViewById(R.id.version_name);
                 gameName =itemClicked.getText().toString();
                 displayInputDialog(gameName);
 

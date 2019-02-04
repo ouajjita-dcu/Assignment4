@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths package="com.example.nadine.assign42019abdelkrimouajjit">
+    <external-path
+        name="my_images"
+        path="." />
+</paths>
