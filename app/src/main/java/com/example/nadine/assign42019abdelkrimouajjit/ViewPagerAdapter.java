@@ -48,6 +48,10 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
         }
     }
 
+    /**
+     *
+     * @return: Retuning the one of the tabs.
+     */
     @Override
     public int getCount() {
         return mNumOfTabs;

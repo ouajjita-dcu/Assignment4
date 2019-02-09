@@ -17,7 +17,6 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 
-
 public class CollectionFragment extends Fragment {
     private static final String TAG = "CollectionFragment";
     ListView listView;

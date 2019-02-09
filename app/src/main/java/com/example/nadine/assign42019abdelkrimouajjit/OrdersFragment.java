@@ -1,5 +1,6 @@
 package com.example.nadine.assign42019abdelkrimouajjit;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -40,13 +41,15 @@ public class OrdersFragment extends Fragment {
     ImageView mImageView;
     boolean imageTaken = false;
     static final int REQUEST_TAKE_PHOTO = 2;
+
     public OrdersFragment() {
         // Required empty public constructor
     }
+
     @Override
-    //  Retrieve data from SharedPreferences before the order fragment is active By using the override onResume method(The lifecycle of a fragment).
+    //  Retrieve data from SharedPreferences before the order fragment is active by using the override onResume method(The lifecycle of a fragment).
     // The onResume event is called when the fragment starts and when the user comes back from another fragment,
-    // in that case the SettingsActivity we created to manage the preferences.
+    // The value of SharedPreferences will be always updated with the last value entered  .
     public void onResume() {
         super.onResume();
         getPrefs();
@@ -58,7 +61,7 @@ public class OrdersFragment extends Fragment {
      * @param inflater: Inflate the layout for this fragment.Defines the xml file for the fragment
      * @param container
      * @param savedInstanceState
-     * @return
+     * @return: The view.
      */
 
     @Override
@@ -97,6 +100,7 @@ public class OrdersFragment extends Fragment {
         // Returning the view.
         return view;
     }
+
     // Creating a file to hold a image.
     private File createTempFile() {
         // Create an image file name
@@ -119,6 +123,7 @@ public class OrdersFragment extends Fragment {
         return myImage;
 
     }
+
     // Taking a photo with a camera app.
     private void dispatchTakePictureIntent() {
         //start the intent.
@@ -143,6 +148,7 @@ public class OrdersFragment extends Fragment {
 
 
         }
+
     // Handling the results
     /**
      *
@@ -162,18 +168,41 @@ public class OrdersFragment extends Fragment {
             Toast toast = Toast.makeText(getContext(), text, duration);
             toast.show();
         }
-        // Building Alert Dialog.
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle(R.string.notification_title).setMessage(R.string.image_confirm).setPositiveButton("OK", null).show();
+
+
+         // 1. Instantiate an AlertDialog.Builder with its constructor
+         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+         // 2. Chain together various setter methods to set the dialog characteristics
+         builder.setMessage("Do you want to set the image on your order screen?  ").setCancelable(false).setPositiveButton("YES", new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
         imageTaken = true;
         // Glide is a fast and efficient image loading library for Android focused.
         // Reference:https://bumptech.github.io/glide/.
         Glide.with(OrdersFragment)
-                .load(mPhotoURI)
-                .into(mImageView);
+        .load(mPhotoURI)
+        .into(mImageView);
+        dialog.dismiss();
+        }
+        })
+         .setNegativeButton("NO", new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            imageTaken = true;
+        dialog.cancel();
+        }
+        });
+         AlertDialog alert=builder.create();
+         alert.setTitle(R.string.image_confirm);
+         alert.setIcon(R.drawable.pencil);
+         alert.show();
+         alert.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(getContext().getColor(R.color.colorPrimary));
+         alert.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(getContext().getColor(R.color.colorPrimary));
+
 
     }
-    // Handling sending the email .
+
+    //  Sending the email .
     public void sendEmail()
     {
         mCustomerName = getView().findViewById(R.id.editCustomer);
@@ -195,10 +224,6 @@ public class OrdersFragment extends Fragment {
         {
             Toast.makeText(getContext(), "Please take a picture ", Toast.LENGTH_SHORT).show();
         }
-//        else if (mPhotoURI.equals(Uri.EMPTY)&& (mPhotoURI == null))
-//        {
-//            Toast.makeText(getContext(), "No picture was taken,Please re-take your picture ", Toast.LENGTH_SHORT).show();
-//        }
         else
         {
 
@@ -230,8 +255,8 @@ public class OrdersFragment extends Fragment {
      * onViewCreated() is only called if the view returned from onCreateView() is non-null.
      * Any view setup should occur here.  E.g., view lookups and attaching view listeners.
      *
-     * @param view
-     * @param savedInstanceState
+     * @param view:The order fragment view.
+     * @param savedInstanceState:Saving the state of the application in a bundle.
      */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -248,6 +273,7 @@ public class OrdersFragment extends Fragment {
                 mSpinner.setAdapter(adapter);
 
     }
+
     // Managing the SharedPrefences by using the method getPrefs().
     private void getPrefs() {
         // Create SharedPreferences.

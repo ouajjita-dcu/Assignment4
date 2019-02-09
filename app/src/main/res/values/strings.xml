@@ -1,21 +1,21 @@
 <resources>
-    <string name="app_name">Assign4 2019 karim Ouajjit</string>
+    <string name="app_name">Assign4 2019 Abdelkrim Ouajjit</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
+    <!-- Tabs Fragments -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="home_page_title">HOME</string>
     <string name="products_page_title">PRODUCTS</string>
     <string name="orders_page_title">ORDERS</string>
     <string name="collection_page_title">COLLECTION</string>
 
-    <!-- TODO: Reference all the hardcode -->
+    <!--  Order fragment : Reference all the hardcode -->
     <string name="Enter_Your_Name">Enter Your Name</string>
-    <string name="Take_photo_for_TShirt">Take photo </string>
+    <string name="Take_photo_for_TShirt">Take a photo </string>
     <string name="order_message_instructions">Delivery Address -or- For Collection</string>
     <string name="ready_time">Delivery/Collection in (days)</string>
     <string name="Send_Order">Send Order</string>
 
-    <!--  TODO Creating the spinner items   -->
+    <!--   Creating the spinner items   -->
 
     <string-array name="ui_time_entries">
         <item>" 2"</item>

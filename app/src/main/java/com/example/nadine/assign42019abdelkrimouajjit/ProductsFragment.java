@@ -28,7 +28,7 @@ import java.util.ArrayList;
 
 
 public class ProductsFragment extends Fragment {
-
+    private static final String TAG = "ProductsFragment";
     private String gameName="";
 
     public ProductsFragment() {
@@ -49,9 +49,16 @@ public class ProductsFragment extends Fragment {
         // Inflate the layout for this fragment
           View view =inflater.inflate(R.layout.fragment_products, container, false);
 
+        // Creating a log that indicate the fragment is onCreateView .
+        Log.d(TAG, "onCreateView: started.");
+
         return view;
     }
 
+    /**
+     *
+     * @param savedInstanceState:Saving the state of the application in a bundle.
+     */
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -80,7 +87,13 @@ public class ProductsFragment extends Fragment {
         ListView listView = getView().findViewById(R.id.listview_fragment);
         listView.setAdapter(gameAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
+            /**
+             *
+             * @param AdapterView:The ListView.
+             * @param view:The view within the AdapterView that was clicked (this will be a view provided by the adapter).
+             * @param position:The position of the view in the adapter.
+             * @param id:The row id of the item that was clicked.
+             */
             @SuppressLint("ResourceAsColor")
             @Override
             public void onItemClick(AdapterView<?> AdapterView, View view, int position, long id) {
@@ -90,6 +103,10 @@ public class ProductsFragment extends Fragment {
 
             }
 
+            /**
+             *
+             * @param gameName:the name of the game.
+             */
             private void displayInputDialog(final String gameName) {
 
                 // 1. Instantiate an AlertDialog.Builder with its constructor
@@ -115,7 +132,10 @@ public class ProductsFragment extends Fragment {
                                 });
                  AlertDialog alert=builder.create();
                  alert.setTitle("Shopping Basket");
-                 alert.show();
+                alert.setIcon(R.drawable.pencil);
+                alert.show();
+                alert.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(getContext().getColor(R.color.colorPrimary));
+                alert.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(getContext().getColor(R.color.colorPrimary));
 
             }
 

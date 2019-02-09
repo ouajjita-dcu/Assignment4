@@ -41,7 +41,7 @@
         android:layout_marginStart="24dp"
         android:text="@string/Take_photo_for_TShirt"
         android:textColor="@color/textColorCamera"
-        android:textSize="20sp"
+        android:textSize="12sp"
         android:textStyle="bold" />
 
     <EditText
